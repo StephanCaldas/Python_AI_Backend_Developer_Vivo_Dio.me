@@ -11,6 +11,29 @@ NOVA_CONTA = "nc"
 LISTAR_CONTAS = "lc"
 SAIR = "q"
 
+class ContasIterador:
+
+    def __init__(self, contas):
+        self.contas = contas
+        self._index = 0
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        try:
+            conta = self.contas[self._index]
+            return f"""\
+            Agência:\t{conta.agencia}
+            Número:\t\t{conta.numero}
+            Titular:\t{conta.cliente.nome}
+            Saldo:\t\tR$ {conta.saldo:.2f}
+        """
+        except IndexError:
+            raise StopIteration
+        finally:
+            self._index += 1
+
 class Conta:
 
     def __init__(self, numero, cliente):
@@ -46,7 +69,7 @@ class Conta:
 
     def sacar(self, valor):
         saldo = self.saldo
-        excedeu_saldo = valor >saldo
+        excedeu_saldo = valor > saldo
 
         if excedeu_saldo:
             print("\n@@@ Operação falhou! Você não tem saldo suficiente. @@@")
@@ -205,12 +228,13 @@ class Deposito(Transacao):
 def log_transacao(func):
 
     @functools.wraps(func)
-    def wrapper_log_transacao(*args, **kwargs):
-        resultado = func(*args, **kwargs)  # Executa a função original e obtém o resultado
+    def envelope(*args, **kwargs):
+        # Executa a função original e obtém o resultado
+        resultado = func(*args, **kwargs)
         
         # Aqui você pode adicionar a lógica para registrar a transação
         transacao = {
-            "data": datetime.now().strftime("%d-%m-%Y  %H:%M:%S"),
+            "data": datetime.now().strftime("%d/%m/%Y  %H:%M:%S"),
             "funcao": func.__name__,
         }
         
@@ -219,7 +243,7 @@ def log_transacao(func):
         
         return resultado
     
-    return wrapper_log_transacao
+    return envelope
 
 def menu():
     menu = """\n
@@ -344,7 +368,7 @@ def criar_conta(numero_conta, clientes, contas):
     print("\n=== Conta criada com sucesso! ===")
 
 def listar_contas(contas):
-    for conta in contas:
+    for conta in ContasIterador(contas):
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
 
@@ -375,7 +399,7 @@ def main():
             listar_contas(contas)
 
         elif opcao == SAIR:
-            print("\n=== Obrigado por usar nosso sistema! ===")
+            print("\n==== Obrigado por usar nosso sistema! =====")
             break
 
         else:
