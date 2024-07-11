@@ -23,7 +23,7 @@ while True:
 
         if valor > 0:
             saldo += valor
-            resultado = (f"+ Depósito   = R${valor:.2f}")
+            resultado = f"+ Depósito   = R${valor:.2f}"
             extrato.append(resultado)
             print()
             print("Depósito realizado com sucesso!")
@@ -50,7 +50,7 @@ while True:
         elif valor > 0 and valor <= limite:
             if numero_saques < LIMITE_SAQUES:
                 saldo -= valor
-                resultado = (f"- Saque      = R${valor:.2f}")
+                resultado = f"- Saque      = R${valor:.2f}"
                 extrato.append(resultado)
                 numero_saques += 1
                 print()
@@ -86,7 +86,6 @@ while True:
 
     else:
         print()
-        print("Opção inválida,"
-              " por favor selecione novamente a operação desejada.")
+        print("Opção inválida," " por favor selecione novamente a operação desejada.")
 
 print("Obrigado por utilizar nosso sistema! Até logo!!!")

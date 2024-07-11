@@ -11,11 +11,12 @@ def menu():
     [0] Sair
 
     """
-    print (menu)
+    print(menu)
     opcao = int(input("Digite a operação desejada: "))
     print()
 
     return opcao
+
 
 def depositar(saldo, extrato):
 
@@ -23,7 +24,7 @@ def depositar(saldo, extrato):
 
     if valor > 0:
         saldo += valor
-        resultado = (f"+ Depósito   = R${valor:.2f}")
+        resultado = f"+ Depósito   = R${valor:.2f}"
         extrato.append(resultado)
         print()
         print("Depósito realizado com sucesso!")
@@ -36,6 +37,7 @@ def depositar(saldo, extrato):
     else:
         print()
         return "Opção inválida!"
+
 
 def sacar(limite, saldo, extrato, limite_saques, numero_saques):
 
@@ -52,12 +54,11 @@ def sacar(limite, saldo, extrato, limite_saques, numero_saques):
     elif valor > 0 and valor <= limite:
         if numero_saques < limite_saques:
             saldo -= valor
-            resultado = (f"- Saque      = R${valor:.2f}")
+            resultado = f"- Saque      = R${valor:.2f}"
             extrato.append(resultado)
             numero_saques += 1
             print()
             print("Saque realizado com sucesso!")
-
 
         elif numero_saques >= 3:
             print()
@@ -73,9 +74,10 @@ def sacar(limite, saldo, extrato, limite_saques, numero_saques):
 
     else:
         print()
-        print ("Operação inválida!")
+        print("Operação inválida!")
 
     return saldo, extrato, numero_saques
+
 
 def exibir_extrato(extrato, saldo):
 
@@ -87,6 +89,7 @@ def exibir_extrato(extrato, saldo):
     print(f"* Saldo      = R${saldo:.2f}")
     print("=" * 25)
 
+
 def criar_usuario(usuarios):
 
     cpf = int(input("Informe o CPF (somente números): "))
@@ -96,21 +99,32 @@ def criar_usuario(usuarios):
         print()
         print("Já existe usuário com esse CPF!")
         return
-    
+
     nome = str(input("Informe o nome completo: "))
     data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
-    endereco = input("Informe o endereço (logradouro, nº - bairro - cidade/sigla estado): ")
+    endereco = input(
+        "Informe o endereço (logradouro, nº - bairro - cidade/sigla estado): "
+    )
 
-    usuarios.append({"nome": nome, "cpf": cpf, "data_nascimento": data_nascimento, "endreco": endereco })
+    usuarios.append(
+        {
+            "nome": nome,
+            "cpf": cpf,
+            "data_nascimento": data_nascimento,
+            "endreco": endereco,
+        }
+    )
 
     print()
     print("=== Usuário criado com sucesso! ===")
-    
+
+
 def filtrar_usuario(cpf, usuarios):
 
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
 
     return usuarios_filtrados[0] if usuarios_filtrados else None
+
 
 def criar_conta(agencia, numero_conta, usuarios):
 
@@ -120,10 +134,11 @@ def criar_conta(agencia, numero_conta, usuarios):
     if usuario:
         print()
         print("=== Conta criada com sucesso! ===")
-        return {"agencia": agencia, "numero_conta": numero_conta, "usuario":usuario}
+        return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
 
     print()
     print("Usuário não encontrado. Não é possivel criar uma conta sem usuário!")
+
 
 def listar_contas(contas):
 
@@ -135,6 +150,7 @@ def listar_contas(contas):
         """
         print("=" * 100)
         print(linha)
+
 
 def main():
 
@@ -157,7 +173,6 @@ def main():
     LIMITE_SAQUES = 3
     AGENCIA = "0001"
 
-
     while True:
 
         opcao = menu()
@@ -173,7 +188,8 @@ def main():
                 saldo=saldo,
                 extrato=extrato,
                 limite_saques=LIMITE_SAQUES,
-                numero_saques=numero_saques)
+                numero_saques=numero_saques,
+            )
 
         elif opcao == EXTRATO:
 
@@ -194,7 +210,7 @@ def main():
 
         elif opcao == LISTAR_CONTAS:
 
-                listar_contas(contas)
+            listar_contas(contas)
 
         elif opcao == SAIR:
 
@@ -203,7 +219,9 @@ def main():
 
         else:
             print()
-            print("Opção inválida,"
-                " por favor selecione novamente a operação desejada.")
+            print(
+                "Opção inválida," " por favor selecione novamente a operação desejada."
+            )
+
 
 main()
